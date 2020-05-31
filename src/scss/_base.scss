@@ -1,0 +1,23 @@
+html {
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 0;
+}
+body,html{
+  height:100%;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    width: 100%;
+}
+
+h1{
+  margin:0;
+}

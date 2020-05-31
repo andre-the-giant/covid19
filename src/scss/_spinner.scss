@@ -1,0 +1,32 @@
+// https://codepen.io/bassetts/pen/RqrPWG
+$color : #cccccc;
+
+@keyframes ripple {
+  from {
+    transform: scale(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.multi-ripple {
+  width: 2.6rem;
+  height: 2.6rem;
+  margin: 2rem;
+
+  div {
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 0.3rem solid $color;
+    animation: 1.5s ripple infinite;
+    &:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+  }
+}
