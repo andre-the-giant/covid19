@@ -1,15 +1,24 @@
 import appVars from '../modules/var.js'
+//import Chart from 'chart.js';
 import SuperRepo from 'super-repo';
 
 const cData = {};
 
+function _formatDate(str) {
+  var dt = new Date(str);
+  return dt.toLocaleDateString(appVars.LOCALE_STRING);
+}
+
+// replace country name with a button to call the API for country data
 function _addButtons() {
   const tableRows = document.querySelectorAll('.results__row>td:first-child')
   tableRows.forEach(function (row) {
     row.innerHTML = `<button class="results__button" type="button">${row.innerHTML}<span class="sr-only">Click for more information about COVID-19 case in ${row.innerHTML}</span></button>`
   });
+
 }
 
+// function to store and retrieve a country data by slug
 function _countrySR(countrySlug) {
   if (!(countrySlug in countryData)) {
     cData[countrySlug] = new SuperRepo({
@@ -22,9 +31,28 @@ function _countrySR(countrySlug) {
   return cData[countrySlug]
 }
 
-//const txt = ;
-
-
+function _showCountryChart(data) {
+  const chartContainer = document.querySelector('.country__chart');
+  var myChart = new Chart(chartContainer, {
+    type: 'bar',
+    data: {
+      labels: data.map(d => _formatDate(d.Date)),
+      datasets: [{
+        label: 'Confirmed case',
+        data: data.map(d => d.Confirmed),
+        backgroundColor: '#ff8787'
+      }, {
+        label: 'Death',
+        data: data.map(d => d.Deaths),
+        backgroundColor: '#000000'
+      }, {
+        label: 'Recovered',
+        data: data.map(d => d.Deaths),
+        backgroundColor: '#87ffb0'
+      }]
+    }
+  });
+}
 // function to handle the click event
 function _showCountryData(e) {
   const {
@@ -36,19 +64,22 @@ function _showCountryData(e) {
     _countrySR(parentNode.dataset.slug)
       .getData()
       .catch(function (error) {
-        mainContainer.innerHTML = "Eror while retrieving Country data.<br>Please try again later";
+        appVars.mainContainer.innerHTML = "Eror while retrieving Country data.<br>Please try again later";
       })
       .then(data => {
-        console.log(data)
+        const countryContainer = document.querySelector('.country');
+        countryContainer.innerHTML = `
+          <h2>${data[0].Country}</h2>
+          <canvas class="country__chart"></canvas>
+          `;
+        System.import("chart.js").then(function () {
+          _showCountryChart(data);
+        })
       })
   } else {
-    return false
+    return false;
   }
 }
-// add Click
-// const group = document.querySelector('.results');
-// document.addEventListener('click', showCountryData, false);
-
 
 let countryData = {
   init: function () {

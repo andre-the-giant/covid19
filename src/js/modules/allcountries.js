@@ -1,7 +1,6 @@
 import appVars from '../modules/var.js'
 import SuperRepo from 'super-repo';
 
-const mainContainer = document.querySelector('main');
 
 // set up SuperRepo to cache data in LocalStorage
 const CovidData = new SuperRepo({
@@ -12,11 +11,11 @@ const CovidData = new SuperRepo({
 })
 
 // function to initialize the table HTML
-function _tableInit(el) {
-  el.innerHTML = `
+function _tableInit() {
+  appVars.mainContainer.innerHTML = `
   <div class="responsive-table">
     <table class="results">
-      <caption class="result__caption">The 10 countries with most COVID-19 cases in the World</caption>
+      <caption class="results__caption">The 10 countries with most COVID-19 cases in the World</caption>
       <thead>
         <tr>
           <th class="results__header">Country</th>
@@ -29,6 +28,7 @@ function _tableInit(el) {
       </tbody>
     </table>
   </div>
+  <div class="country"></div>
   `;
 }
 // function to add a row the the results table. Using template litterals makes it easy
@@ -51,13 +51,13 @@ let allCountries = {
     return CovidData
       .getData()
       .catch(function (error) {
-        mainContainer.innerHTML = "Eror while retrieving data from the API.<br>Please try again later";
+        appVars.mainContainer.innerHTML = "Eror while retrieving data from the API.<br>Please try again later";
       })
       .then(data => {
         // sort data by TotalConfirmed
         const countriesSorted = data.Countries.sort((a, b) => parseInt(b.TotalConfirmed) - parseInt(a.TotalConfirmed));
         // table init
-        _tableInit(mainContainer);
+        _tableInit();
         // feed the table all rows at once to minimize DOM access
         const table = document.querySelector('tbody');
         let htmlToAppend = '';
