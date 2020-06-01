@@ -12,6 +12,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/main.js'
   },
+  externals: {
+    moment: 'moment'
+  },
   module: {
     rules: [{
         test: /\.js$/,
