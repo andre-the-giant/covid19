@@ -1,6 +1,12 @@
 # covid19
 Web app pulling data from an API
 
+## Dependencies
+
+https://github.com/superKalo/super-repo for data storage, and because this script implements good practices for working with and storing data on the client-side. Caching any API calls drastically improve performance. 
+
+https://github.com/chartjs for drawing charts on a canvas
+
 ## Setup instructions
 
 ### 1. Download and Install NodeJS
